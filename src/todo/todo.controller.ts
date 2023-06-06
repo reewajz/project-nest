@@ -14,6 +14,8 @@ import {
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDTO } from './dto/CreateTodoDTO';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { ResponseTodoDTO } from './dto/ResponseTodoDTO';
 
 @Controller('todos')
 export class TodoController {
@@ -40,6 +42,8 @@ export class TodoController {
   }
 
   // Fetch all todos
+  // use of interceptor to return only selected fields
+  @Serialize(ResponseTodoDTO)
   @Get('/')
   async getTodos(@Res() res) {
     const todos = await this.todoService.getTodos();
